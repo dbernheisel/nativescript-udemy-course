@@ -1,17 +1,31 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, NavigationExtras } from "@angular/router";
+import * as ApplicationSettings from "application-settings"
+import { Location } from "@angular/common"
 
 @Component({
     selector: "page1",
     templateUrl: "./components/page1/page1.component.html",
 })
 export class Page1Component implements OnInit {
-    public people: Array<any>;
 
-    public constructor(private router: Router) {
+    public people: Array<any>;
+    private storage: any;
+
+    public constructor(private router: Router, private location: Location) {
         this.people = [];
+        this.storage = [];
     }
 
+    public ngOnInit() {
+        this.location.subscribe(() => {
+            this.storage = JSON.parse(ApplicationSettings.getString("data", "[]"));
+            this.people = this.storage;
+        });
+        this.storage = JSON.parse(ApplicationSettings.getString("data", "[]"));
+        this.people = this.storage;
+    }
+    
     public goToNextPage(fullName: string) {
         let navigationExtras: NavigationExtras = {
             queryParams: {
@@ -21,15 +35,8 @@ export class Page1Component implements OnInit {
         this.router.navigate(["page2"], navigationExtras);
     }
 
-    public ngOnInit() {
-        this.people.push({
-            "firstname": "David",
-            "lastname": "Bernheisel"
-        });
-        this.people.push({
-            "firstname": "Foo",
-            "lastname": "Bear"
-        });
-        
+    public addUserData() {
+        this.router.navigate(["page3"]);
     }
+
 }

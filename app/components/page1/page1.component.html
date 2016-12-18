@@ -1,5 +1,5 @@
 <ActionBar title="Page 1">
-    <ActionItem text="Add" ios.position="right"></ActionItem>
+    <ActionItem text="Add" ios.position="right" (tap)="addUserData()"></ActionItem>
 </ActionBar>
 <GridLayout>
     <ListView [items]="people" class="list-group">
