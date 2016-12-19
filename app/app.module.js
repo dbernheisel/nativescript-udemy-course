@@ -5,6 +5,7 @@ var router_1 = require("nativescript-angular/router");
 var forms_1 = require("nativescript-angular/forms");
 var app_routing_1 = require("./app.routing");
 var app_component_1 = require("./app.component");
+var database_1 = require("./providers/database/database");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -18,7 +19,8 @@ var AppModule = (function () {
                 forms_1.NativeScriptFormsModule,
                 router_1.NativeScriptRouterModule.forRoot(app_routing_1.AppRoutes)
             ],
-            schemas: [core_1.NO_ERRORS_SCHEMA]
+            schemas: [core_1.NO_ERRORS_SCHEMA],
+            providers: [database_1.Database]
         }), 
         __metadata('design:paramtypes', [])
     ], AppModule);

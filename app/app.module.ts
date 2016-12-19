@@ -4,6 +4,7 @@ import { NativeScriptRouterModule } from "nativescript-angular/router";
 import { NativeScriptFormsModule } from "nativescript-angular/forms";
 import { AppRoutes, AppComponents } from "./app.routing";
 import { AppComponent } from "./app.component";
+import { Database } from "./providers/database/database";
 
 @NgModule({
     declarations: [AppComponent, ...AppComponents],
@@ -14,6 +15,7 @@ import { AppComponent } from "./app.component";
         NativeScriptFormsModule,
         NativeScriptRouterModule.forRoot(AppRoutes)
     ],
-    schemas: [NO_ERRORS_SCHEMA]
+    schemas: [NO_ERRORS_SCHEMA],
+    providers: [Database]
 })
 export class AppModule { }

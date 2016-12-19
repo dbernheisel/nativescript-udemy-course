@@ -2,20 +2,16 @@
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var common_1 = require("@angular/common");
-var nativescript_couchbase_1 = require("nativescript-couchbase");
+var database_1 = require("../../providers/database/database");
 var Platform = require("platform");
 var Application = require("application");
 var jsSHA = require("jssha");
 var Page1Component = (function () {
-    function Page1Component(router, location) {
+    function Page1Component(router, location, database) {
         this.router = router;
         this.location = location;
+        this.database = database;
         this.people = [];
-        this.storage = [];
-        this.database = new nativescript_couchbase_1.Couchbase("myproject");
-        this.database.createView("people", "1", function (document, emitter) {
-            emitter.emit(document._id, document);
-        });
     }
     Page1Component.prototype.ngOnInit = function () {
         var _this = this;
@@ -30,7 +26,7 @@ var Page1Component = (function () {
     };
     Page1Component.prototype.loadData = function () {
         this.people = [];
-        var rows = this.database.executeQuery("people");
+        var rows = this.database.getStorage().executeQuery("people");
         for (var i = 0; i < rows.length; i++) {
             this.people.push(rows[i]);
         }
@@ -66,7 +62,7 @@ var Page1Component = (function () {
             selector: "page1",
             templateUrl: "./components/page1/page1.component.html",
         }), 
-        __metadata('design:paramtypes', [router_1.Router, common_1.Location])
+        __metadata('design:paramtypes', [router_1.Router, common_1.Location, database_1.Database])
     ], Page1Component);
     return Page1Component;
 }());

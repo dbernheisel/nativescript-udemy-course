@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, NavigationExtras } from "@angular/router";
 import { Location } from "@angular/common"
-import { Couchbase } from "nativescript-couchbase";
+import { Database } from "../../providers/database/database";
+
 import * as Platform from "platform";
 import * as Application from "application";
 var jsSHA = require("jssha");
@@ -18,15 +19,9 @@ export class Page1Component implements OnInit {
 
     public people: Array<any>;
     private storage: any;
-    private database: any;
 
-    public constructor(private router: Router, private location: Location) {
+    public constructor(private router: Router, private location: Location, private database: Database) {
         this.people = [];
-        this.storage = [];
-        this.database = new Couchbase("myproject");
-        this.database.createView("people", "1", (document, emitter) => {
-            emitter.emit(document._id, document);
-        })
     }
 
     public ngOnInit() {
@@ -42,7 +37,7 @@ export class Page1Component implements OnInit {
 
     public loadData() {
         this.people = [];
-        let rows = this.database.executeQuery("people");
+        let rows = this.database.getStorage().executeQuery("people");
         for(let i = 0; i < rows.length; i++) {
             this.people.push(rows[i]);
         }

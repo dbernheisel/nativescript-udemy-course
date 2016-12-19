@@ -1,20 +1,20 @@
 "use strict";
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
-var nativescript_couchbase_1 = require("nativescript-couchbase");
+var database_1 = require("../../providers/database/database");
 var Page3Component = (function () {
-    function Page3Component(location) {
+    function Page3Component(location, database) {
         this.location = location;
+        this.database = database;
         this.firstname = "";
         this.lastname = "";
-        this.database = new nativescript_couchbase_1.Couchbase("myproject");
     }
     ;
     Page3Component.prototype.ngOnInit = function () {
     };
     Page3Component.prototype.save = function () {
         if (this.firstname && this.lastname) {
-            this.database.createDocument({
+            this.database.getStorage().createDocument({
                 "firstname": this.firstname,
                 "lastname": this.lastname
             });
@@ -26,7 +26,7 @@ var Page3Component = (function () {
             selector: "page3",
             templateUrl: "./components/page3/page3.component.html",
         }), 
-        __metadata('design:paramtypes', [common_1.Location])
+        __metadata('design:paramtypes', [common_1.Location, database_1.Database])
     ], Page3Component);
     return Page3Component;
 }());

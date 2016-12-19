@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Location } from "@angular/common";
-import { Couchbase } from "nativescript-couchbase";
+import { Database } from "../../providers/database/database"
 
 @Component({
     selector: "page3",
@@ -10,12 +10,10 @@ import { Couchbase } from "nativescript-couchbase";
 export class Page3Component implements OnInit {
     public firstname: string;
     public lastname: string;
-    private database: any;
 
-    public constructor(private location: Location) {
+    public constructor(private location: Location, private database: Database) {
         this.firstname = "";
         this.lastname = "";
-        this.database = new Couchbase("myproject");
     };
 
     public ngOnInit() {
@@ -24,7 +22,7 @@ export class Page3Component implements OnInit {
 
     public save(){
         if(this.firstname && this.lastname) {
-            this.database.createDocument({
+            this.database.getStorage().createDocument({
                 "firstname": this.firstname,
                 "lastname": this.lastname
             });
