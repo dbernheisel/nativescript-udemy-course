@@ -1,6 +1,7 @@
 "use strict";
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
+var Camera = require("camera");
 var Page2Component = (function () {
     function Page2Component(route) {
         this.route = route;
@@ -10,6 +11,11 @@ var Page2Component = (function () {
         var _this = this;
         this.route.queryParams.subscribe(function (params) {
             _this.fullName = params["name"];
+        });
+    };
+    Page2Component.prototype.capture = function () {
+        Camera.takePicture().then(function (picture) {
+            // do something
         });
     };
     Page2Component = __decorate([

@@ -3,6 +3,8 @@ var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var common_1 = require("@angular/common");
 var nativescript_couchbase_1 = require("nativescript-couchbase");
+var Platform = require("platform");
+var Application = require("application");
 var jsSHA = require("jssha");
 var Page1Component = (function () {
     function Page1Component(router, location) {
@@ -45,6 +47,16 @@ var Page1Component = (function () {
             }
         };
         this.router.navigate(["page2"], navigationExtras);
+    };
+    Page1Component.prototype.getApplicationVersion = function () {
+        if (Platform.isAndroid) {
+            var PackageManager = android.content.pm.PackageManager;
+            var pkg = Application.android.context.getPackageManager().getPackageInfo(Application.android.context.getPackageName(), PackageManager.GET_META_DATA);
+            return java.lang.Integer.toString(pkg.versionCode);
+        }
+        else {
+            var version = NSBundle.mainBundle.objectForInfoDictionaryKey("CFBundleShortVersionString");
+        }
     };
     Page1Component.prototype.addUserData = function () {
         this.router.navigate(["page3"]);

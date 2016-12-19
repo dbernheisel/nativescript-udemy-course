@@ -2,7 +2,13 @@ import { Component, OnInit } from "@angular/core";
 import { Router, NavigationExtras } from "@angular/router";
 import { Location } from "@angular/common"
 import { Couchbase } from "nativescript-couchbase";
+import * as Platform from "platform";
+import * as Application from "application";
 var jsSHA = require("jssha");
+
+declare var android: any;
+declare var java: any;
+declare var NSBundle: any;
 
 @Component({
     selector: "page1",
@@ -55,6 +61,16 @@ export class Page1Component implements OnInit {
             }
         }
         this.router.navigate(["page2"], navigationExtras);
+    }
+
+    public getApplicationVersion(): string {
+        if(Platform.isAndroid) {
+            let PackageManager = android.content.pm.PackageManager;
+            let pkg = Application.android.context.getPackageManager().getPackageInfo(Application.android.context.getPackageName(), PackageManager.GET_META_DATA);
+            return java.lang.Integer.toString(pkg.versionCode);
+        } else {
+            let version = NSBundle.mainBundle.objectForInfoDictionaryKey("CFBundleShortVersionString");
+        }
     }
 
     public addUserData() {
