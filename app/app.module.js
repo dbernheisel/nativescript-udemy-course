@@ -12,7 +12,12 @@ var AppModule = (function () {
         core_1.NgModule({
             declarations: [app_component_1.AppComponent].concat(app_routing_1.AppComponents),
             bootstrap: [app_component_1.AppComponent],
-            imports: [platform_1.NativeScriptModule, router_1.NativeScriptRouterModule, forms_1.NativeScriptFormsModule, router_1.NativeScriptRouterModule.forRoot(app_routing_1.AppRoutes)],
+            imports: [
+                platform_1.NativeScriptModule,
+                router_1.NativeScriptRouterModule,
+                forms_1.NativeScriptFormsModule,
+                router_1.NativeScriptRouterModule.forRoot(app_routing_1.AppRoutes)
+            ],
             schemas: [core_1.NO_ERRORS_SCHEMA]
         }), 
         __metadata('design:paramtypes', [])

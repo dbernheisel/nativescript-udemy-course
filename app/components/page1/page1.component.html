@@ -6,6 +6,7 @@
         <Template let-person="item">
             <StackLayout class="list-group-item" (tap)="goToNextPage(person.firstname + ' ' + person.lastname)">
                 <Label text="{{ person.firstname }} {{ person.lastname }}"></Label>
+                <Label text="{{ hashName(person.firstname + ' ' + person.lastname) }}"></Label>
             </StackLayout>
         </Template>
     </ListView>
