@@ -1,10 +1,13 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, NavigationExtras } from "@angular/router";
 import { Location } from "@angular/common"
-import { Database } from "../../providers/database/database";
-
+import { Http, Headers, RequestOptions } from "@angular/http";
+import "rxjs/Rx";
 import * as Platform from "platform";
 import * as Application from "application";
+
+import { Database } from "../../providers/database/database";
+
 var jsSHA = require("jssha");
 
 declare var android: any;
@@ -20,7 +23,7 @@ export class Page1Component implements OnInit {
     public people: Array<any>;
     private storage: any;
 
-    public constructor(private router: Router, private location: Location, private database: Database) {
+    public constructor(private router: Router, private location: Location, private database: Database, private http: Http) {
         this.people = [];
     }
 
@@ -33,6 +36,7 @@ export class Page1Component implements OnInit {
         // this.storage = JSON.parse(ApplicationSettings.getString("data", "[]"));
         // this.people = this.storage;
         this.loadData();
+        this.makeRemoteRequest();
     }
 
     public loadData() {
@@ -70,6 +74,23 @@ export class Page1Component implements OnInit {
 
     public addUserData() {
         this.router.navigate(["page3"]);
+    }
+
+    public makeRemoteRequest() {
+        let headers = new Headers({"Content-Type": "application/json"});
+        let options = new RequestOptions({ headers: headers });
+        this.http.post("https://httpbin.org/post", JSON.stringify({
+            firstname: "Brad",
+            lastname: "Martin"
+        }), options)
+        .map(result => result.json())
+        .do(result => console.log(JSON.stringify(result)))
+        .subscribe(result => {
+            this.people.push(result.json);
+        }, error => {
+            console.log(error)
+        })
+
     }
 
 }

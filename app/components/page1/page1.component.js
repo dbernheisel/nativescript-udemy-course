@@ -2,15 +2,18 @@
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var common_1 = require("@angular/common");
-var database_1 = require("../../providers/database/database");
+var http_1 = require("@angular/http");
+require("rxjs/Rx");
 var Platform = require("platform");
 var Application = require("application");
+var database_1 = require("../../providers/database/database");
 var jsSHA = require("jssha");
 var Page1Component = (function () {
-    function Page1Component(router, location, database) {
+    function Page1Component(router, location, database, http) {
         this.router = router;
         this.location = location;
         this.database = database;
+        this.http = http;
         this.people = [];
     }
     Page1Component.prototype.ngOnInit = function () {
@@ -23,6 +26,7 @@ var Page1Component = (function () {
         // this.storage = JSON.parse(ApplicationSettings.getString("data", "[]"));
         // this.people = this.storage;
         this.loadData();
+        this.makeRemoteRequest();
     };
     Page1Component.prototype.loadData = function () {
         this.people = [];
@@ -57,12 +61,28 @@ var Page1Component = (function () {
     Page1Component.prototype.addUserData = function () {
         this.router.navigate(["page3"]);
     };
+    Page1Component.prototype.makeRemoteRequest = function () {
+        var _this = this;
+        var headers = new http_1.Headers({ "Content-Type": "application/json" });
+        var options = new http_1.RequestOptions({ headers: headers });
+        this.http.post("https://httpbin.org/post", JSON.stringify({
+            firstname: "Brad",
+            lastname: "Martin"
+        }), options)
+            .map(function (result) { return result.json(); })
+            .do(function (result) { return console.log(JSON.stringify(result)); })
+            .subscribe(function (result) {
+            _this.people.push(result.json);
+        }, function (error) {
+            console.log(error);
+        });
+    };
     Page1Component = __decorate([
         core_1.Component({
             selector: "page1",
             templateUrl: "./components/page1/page1.component.html",
         }), 
-        __metadata('design:paramtypes', [router_1.Router, common_1.Location, database_1.Database])
+        __metadata('design:paramtypes', [router_1.Router, common_1.Location, database_1.Database, http_1.Http])
     ], Page1Component);
     return Page1Component;
 }());
